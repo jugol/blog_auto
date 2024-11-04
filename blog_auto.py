@@ -22,8 +22,6 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from seleniumbase import Driver
 
 from webdriver_manager.chrome import ChromeDriverManager
-import undetected_chromedriver as uc
-from undetected_chromedriver.options import ChromeOptions
 
 # MongoDB 연결
 uri = "mongodb+srv://admin:admin12341234@cluster0.3e37l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
@@ -110,8 +108,10 @@ def write_tistory_post(title, content, keywords):
 
     time.sleep(3)
     # 글 쓰기 버튼 클릭하기
-    write_button = tistory_driver.find_element(By.CLASS_NAME, "link_write")
-    ActionChains(tistory_driver).click(write_button).perform()
+    # write_button = tistory_driver.find_element(By.CLASS_NAME, "link_write")
+    # ActionChains(tistory_driver).click(write_button).perform()
+    # 글쓰기버튼 안클릭해도 바로 다이렉트 URL이 있더라
+    tistory_driver.get("https://dropdrop.tistory.com/manage/newpost/?type=post&returnURL=%2Fmanage%2Fposts%2F")
     tistory_driver.implicitly_wait(10)
 
     # 혹시나 임시저장글 어쩌고가 나올 때를 대비해서
@@ -263,10 +263,15 @@ def get_post_from_gpt():
     names = [result["title"] for result in results]
 
     gpt_chat_input = chatgpt_driver.find_element(By.ID, "prompt-textarea")
-    ActionChains(chatgpt_driver).send_keys_to_element(gpt_chat_input, "Create new content while avoiding following listings as much as possible. [" + ", ".join(map(str,names)) + "]").perform()
+    # ActionChains(chatgpt_driver).send_keys_to_element(gpt_chat_input, "Create new content while avoiding following listings as much as possible. [" + ", ".join(map(str,names)) + "]").perform()
+    pyperclip.copy("Create new content while avoiding following listings as much as possible. [" + ", ".join(map(str,names)) + "]")
+    ActionChains(chatgpt_driver).click(gpt_chat_input).perform()
+    ActionChains(chatgpt_driver).key_down(Keys.CONTROL).send_keys('v').key_up(Keys.CONTROL).perform()
+    chatgpt_driver.implicitly_wait(10)
+
     gpt_chat_input.send_keys(Keys.ENTER)
     time.sleep(1)
-    WebDriverWait(chatgpt_driver, 80).until(EC.presence_of_element_located((By.CSS_SELECTOR, "[aria-label='프롬프트 보내기']")))
+    WebDriverWait(chatgpt_driver, 100).until(EC.presence_of_element_located((By.CSS_SELECTOR, "[aria-label='프롬프트 보내기']")))
     # gpt_chat_output_element = chatgpt_driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/main/div[1]/div[1]/div/div/div/div/article[2]/div/div/div[2]/div/div[1]/div/div/div/p")
     # gpt_chat_output_json_text = gpt_chat_output_element.text
     # gpt_chat_output_dict = json.loads(gpt_chat_output_json_text)
@@ -308,3 +313,11 @@ for _posting in postings:
         except Exception as e:
             print(f"An error occurred: {e}")
             continue
+
+def restart():
+    return os.system("shutdown /r /t 1")
+
+def shutdown():
+    return os.system("shutdown /s /t 1")
+
+restart()
