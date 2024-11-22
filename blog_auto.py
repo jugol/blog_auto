@@ -266,7 +266,8 @@ def get_post_from_gpt():
     ActionChains(chatgpt_driver).send_keys_to_element(gpt_chat_input, "Create new content while avoiding following listings as much as possible. [" + ", ".join(map(str,names)) + "]").perform()
     gpt_chat_input.send_keys(Keys.ENTER)
     time.sleep(1)
-    WebDriverWait(chatgpt_driver, 80).until(EC.presence_of_element_located((By.CSS_SELECTOR, "[aria-label='프롬프트 보내기']")))
+    # WebDriverWait(chatgpt_driver, 80).until(EC.presence_of_element_located((By.CSS_SELECTOR, "[aria-label='프롬프트 보내기']")))
+    WebDriverWait(chatgpt_driver, 80).until(EC.presence_of_element_located((By.CSS_SELECTOR, "[aria-label='음성 모드 시작']")))
     # gpt_chat_output_element = chatgpt_driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/main/div[1]/div[1]/div/div/div/div/article[2]/div/div/div[2]/div/div[1]/div/div/div/p")
     # gpt_chat_output_json_text = gpt_chat_output_element.text
     # gpt_chat_output_dict = json.loads(gpt_chat_output_json_text)
