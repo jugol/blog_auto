@@ -283,6 +283,7 @@ def get_post_from_gpt():
     span_elements = gpt_chat_output_element.find_elements(By.TAG_NAME, 'span')
     # <span> 태그들의 텍스트를 하나의 문자열로 조합
     gpt_chat_output_json_text = ''.join([replace_markdown_bold_with_html(span.text) for span in span_elements])
+    print(gpt_chat_output_json_text)
     gpt_chat_output_dict = json.loads(gpt_chat_output_json_text)
 
     gpt_chat_input = chatgpt_driver.find_element(By.ID, "prompt-textarea")
