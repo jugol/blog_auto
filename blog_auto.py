@@ -44,8 +44,9 @@ print("Connected to MongoDB")
 history_story = ['category-item-1201184', 'https://chatgpt.com/g/g-GB6qPTSIt-yeogsa-sseol-blog-json']
 science_story = ['category-item-1201410', 'https://chatgpt.com/g/g-G6PYOE1TE-gwahag-sseol-blog-json']
 health_story = ['category-item-1204403', 'https://chatgpt.com/g/g-cEdBDA8JR-geongang-gwanryeon-sseol-json']
+blockchain_story = ['category-item-1218575', 'https://chatgpt.com/g/g-677269c172088191aaf9df91cf6e5f44-amhohwapye-gwanryeon-sseol-json']
 
-postings = [history_story, science_story, health_story]
+postings = [blockchain_story, history_story, science_story, health_story, blockchain_story]
 posting = history_story
 
 # driver = uc.Chrome(service=Service(ChromeDriverManager().install()), user_data_dir='C:\\selenium_data\\Chrome', port=54806, disable_logging=True, detach=True, excludeSwitches=["enable-logging"])
@@ -172,6 +173,7 @@ def write_tistory_post(title, content, keywords):
     
     #글 내용 입력하기 (HTML)
     #클립보드에 content 복사
+    content = '<br/><br/><a href="https://accounts.binance.com/en/register?ref=MCCWQ61A" style="text-decoration: none; font-size: 1.4em; color: rgb(34, 17, 102); font-weight: bolder;" target="_blank"> 바이낸스(₿) 수수료 평생 20% 할인받는 링크로 가입하기! 🔥 (클릭!)</a>' + content
     pyperclip.copy(content)
     content_input = tistory_driver.find_element(By.CLASS_NAME, "mce-edit-area")
     ActionChains(tistory_driver).click(content_input).perform()
@@ -272,7 +274,7 @@ def get_post_from_gpt():
     gpt_chat_input.send_keys(Keys.ENTER)
     time.sleep(1)
     # WebDriverWait(chatgpt_driver, 100).until(EC.presence_of_element_located((By.CSS_SELECTOR, "[aria-label='프롬프트 보내기']")))
-    WebDriverWait(chatgpt_driver, 100).until(EC.presence_of_element_located((By.CSS_SELECTOR, "[aria-label='음성 모드 시작']")))
+    WebDriverWait(chatgpt_driver, 120).until(EC.presence_of_element_located((By.CSS_SELECTOR, "[aria-label='음성 모드 시작']")))
     # gpt_chat_output_element = chatgpt_driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/main/div[1]/div[1]/div/div/div/div/article[2]/div/div/div[2]/div/div[1]/div/div/div/p")
     # gpt_chat_output_json_text = gpt_chat_output_element.text
     # gpt_chat_output_dict = json.loads(gpt_chat_output_json_text)
@@ -308,7 +310,7 @@ def main_process():
 
 for _posting in postings:
     posting = _posting
-    for i in range(5):
+    for i in range(3):
         try:
             main_process()
         except Exception as e:
