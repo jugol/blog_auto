@@ -45,8 +45,9 @@ history_story = ['category-item-1201184', 'https://chatgpt.com/g/g-GB6qPTSIt-yeo
 science_story = ['category-item-1201410', 'https://chatgpt.com/g/g-G6PYOE1TE-gwahag-sseol-blog-json']
 health_story = ['category-item-1204403', 'https://chatgpt.com/g/g-cEdBDA8JR-geongang-gwanryeon-sseol-json']
 blockchain_story = ['category-item-1218575', 'https://chatgpt.com/g/g-677269c172088191aaf9df91cf6e5f44-amhohwapye-gwanryeon-sseol-json']
+every_story = ['category-item-1224348', 'https://chatgpt.com/g/g-6791b873b6c481919f28c34bcb36342f-muhan-beulrogeu-kontenceu-saengseonggi-json']
 
-postings = [blockchain_story, history_story, science_story, health_story, blockchain_story]
+postings = [every_story, every_story, every_story, history_story, science_story, health_story, blockchain_story]
 posting = history_story
 
 # driver = uc.Chrome(service=Service(ChromeDriverManager().install()), user_data_dir='C:\\selenium_data\\Chrome', port=54806, disable_logging=True, detach=True, excludeSwitches=["enable-logging"])
@@ -310,7 +311,7 @@ def main_process():
 
 for _posting in postings:
     posting = _posting
-    for i in range(3):
+    for i in range(2):
         try:
             main_process()
         except Exception as e:
