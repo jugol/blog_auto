@@ -282,12 +282,17 @@ def get_post_from_gpt():
 
 
     gpt_chat_output_element = driver.find_element(By.TAG_NAME, 'code')
-    # <code> 태그 내부의 모든 <span> 태그들 찾기
-    span_elements = gpt_chat_output_element.find_elements(By.TAG_NAME, 'span')
-    # <span> 태그들의 텍스트를 하나의 문자열로 조합
-    gpt_chat_output_json_text = ''.join([replace_markdown_bold_with_html(span.text) for span in span_elements])
-    print(gpt_chat_output_json_text)
-    gpt_chat_output_dict = json.loads(gpt_chat_output_json_text)
+
+    # <span> 태그 중 가장 상위에 있는 태그가 생겼음
+    top_span_element = gpt_chat_output_element.find_element(By.XPATH, './span')
+    gpt_chat_output_dict = json.loads(top_span_element.text)
+
+    # # <code> 태그 내부의 모든 <span> 태그들 찾기
+    # span_elements = gpt_chat_output_element.find_elements(By.TAG_NAME, 'span')
+    # # <span> 태그들의 텍스트를 하나의 문자열로 조합
+    # gpt_chat_output_json_text = ''.join([replace_markdown_bold_with_html(span.text) for span in span_elements])
+    # print(gpt_chat_output_json_text)
+    # gpt_chat_output_dict = json.loads(gpt_chat_output_json_text)
 
     gpt_chat_input = chatgpt_driver.find_element(By.ID, "prompt-textarea")
     ActionChains(chatgpt_driver).send_keys_to_element(gpt_chat_input, "위 내용의 커버사진으로 쓸만한 이미지 정책에 걸리지 않게 하나 만들어 줘").perform()
